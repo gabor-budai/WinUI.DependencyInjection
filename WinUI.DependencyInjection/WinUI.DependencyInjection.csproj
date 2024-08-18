@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<LangVersion>latest</LangVersion>
+		<PackageId>$(AssemblyName)</PackageId>
+		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
+		<Authors>Gabor Budai</Authors>
+		<Company>Gabor Budai</Company>
+		<Description>This source generator makes possible to instantiate a Micrsoft.UI.Xaml.Controls.Page via a service provider.</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/gabor-budai/WinUI.DependencyInjection</RepositoryUrl>
+		<PackageTags>WinUI.Dependency; WinUI.DependencyInjection; WinUI DependencyInjection</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\README_DETAIL.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="XamlMetadataServiceProviderCodeGenerator.tt">
+			<Generator>TextTemplatingFilePreprocessor</Generator>
+			<LastGenOutput>XamlMetadataServiceProviderCodeGenerator.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="XamlMetadataServiceProviderCodeGenerator.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>XamlMetadataServiceProviderCodeGenerator.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
