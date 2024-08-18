@@ -19,7 +19,7 @@ public class ClassInfo
 
     public static ClassInfo? CreateInstance(INamedTypeSymbol symbol)
     {
-		// Global classes are not supported, in most cases WinUI projects are don't have global classes.
+		// Global classes are not supported, in most cases, WinUI projects don't have global classes.
 		var @namespace = symbol.ContainingNamespace.ToDisplayString();
 		if (string.IsNullOrWhiteSpace(@namespace)) return null;
 
