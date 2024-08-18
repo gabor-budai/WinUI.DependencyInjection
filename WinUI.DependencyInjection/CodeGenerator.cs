@@ -4,37 +4,58 @@ namespace WinUI.DependencyInjection;
 
 public abstract class CodeGenerator : CodeGeneratorBase
 {
-    public string Tool => "WinUI.Extensions.SourceGenerators.DependencyInjection";
-    public string ToolVersion => "1.0.0";
+    private ClassInfo _model;
 
-    public ClassInfo Model { get; set; }
+    public ClassInfo Model
+    {
+        get => _model;
+        set
+        {
+            _model = value;
+            ThrowNotSupportedException_GetAppProvider = $"throw new global::System.NotSupportedException(\"The {Model.ClassFullName} must implement the {Templates.IXamlMetadataServiceProvider.FullName} interface or have an _AppProvider property.\")";
+            ThrowNotSupportedException_GetRequiredService = $"throw new global::System.NotImplementedException(\"The {Model.ClassFullName} must implement the Microsoft.Extensions.Hosting.IHost Host property or the {Templates.IXamlMetadataServiceProvider.FullName} interface.\")";
+        }
+    }
 
     public string Visibility { get; set; }
 
-    public bool Debug { get; set; } = false;
+    public bool Debug { get; set; }
+#if DEBUG
+	= false;
+#else
+	= false; // DO NOT CHANGE
+#endif
 
-    public string GeneratedCodeAttribute => $"[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"{Tool}\", \"{ToolVersion}\")]";
+	public string GeneratedCodeAttribute { get; } 
 
-    public string DebuggerNonUserCodeAttribute => "[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]";
+    public string DebuggerNonUserCodeAttribute { get; } = "[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]";
 
-    public string MarkupNamespace => "global::Microsoft.UI.Xaml.Markup";
+    public string MarkupNamespace { get; } = "global::Microsoft.UI.Xaml.Markup";
 
-    public string ThrowNotSupportedException_GetAppProvider => $"throw new global::System.NotSupportedException(\"The {Model.ClassFullName} must implement the {Templates.IXamlMetadataServiceProvider.FullName} interface or have an _AppProvider property.\")";
+    public string ThrowNotSupportedException_GetAppProvider { get; private set; }
 
-    public string ThrowNotSupportedException_GetRequiredService => $"throw new System.NotImplementedException(\"The {Model.ClassFullName} must implement the Microsoft.Extensions.Hosting.IHost Host property or the {Templates.IXamlMetadataServiceProvider.FullName} interface.\")";
+    public string ThrowNotSupportedException_GetRequiredService { get; private set; }
+
+    public CodeGenerator()
+    {
+        var type = typeof(XamlMetadataServiceProviderGenerator);
+        var tool = type.FullName!;
+        var toolVersion = type.Assembly.GetName().Version!.ToString();
+        GeneratedCodeAttribute = $"[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"{tool}\", \"{toolVersion}\")]";
+    }
 }
 
 public abstract class CodeGeneratorBase
 {
-    #region Fields
+	#region Fields
     private global::System.Text.StringBuilder generationEnvironmentField;
     //private global::System.CodeDom.Compiler.CompilerErrorCollection errorsField;
     private global::System.Collections.Generic.List<int> indentLengthsField;
     private string currentIndentField = "";
     private bool endsWithNewline;
     private global::System.Collections.Generic.IDictionary<string, object> sessionField;
-    #endregion
-    #region Properties
+	#endregion
+	#region Properties
     /// <summary>
     /// The string builder that generation-time code is using to assemble generated output
     /// </summary>
@@ -105,8 +126,8 @@ public abstract class CodeGeneratorBase
             this.sessionField = value;
         }
     }
-    #endregion
-    #region Transform-time helpers
+	#endregion
+	#region Transform-time helpers
     public abstract string TransformText();
     /// <summary>
     /// Write text directly into the generated output
@@ -234,8 +255,8 @@ public abstract class CodeGeneratorBase
         this.indentLengths.Clear();
         this.currentIndentField = "";
     }
-    #endregion
-    #region ToString Helpers
+	#endregion
+	#region ToString Helpers
     /// <summary>
     /// Utility class to produce culture-oriented representation of an object as a string.
     /// </summary>
@@ -293,5 +314,5 @@ public abstract class CodeGeneratorBase
             return this.toStringHelperField;
         }
     }
-    #endregion
+	#endregion
 }

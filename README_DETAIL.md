@@ -214,8 +214,11 @@ file sealed class ServiceProviderXamlUserType : IXamlType
     public WinUI.Extensions.SourceGenerators.DependencyInjection.TestApp.TestApp_XamlTypeInfo.XamlMetadataServiceProvider Provider { get; }
     public object ActivateInstance() => Provider.GetRequiredService(UnderlyingType); // Hooray, we can use the service provider!
 
-    // Other interface properties or methods does the same.
+    // Other interface properties or methods do the same.
     public IXamlType BaseType => XamlUserType.BaseType;
     // ...
 }
 ```
+The gnerated code can be found under the Project->Dependencies->Analyzers->WinUI.DependencyInjection.XamlMetadataServiceProviderGenerator
+
+![image](analyzers.png)

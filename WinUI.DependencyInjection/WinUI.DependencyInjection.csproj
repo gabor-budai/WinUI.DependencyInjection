@@ -14,7 +14,8 @@
 		<RepositoryUrl>https://github.com/gabor-budai/WinUI.DependencyInjection</RepositoryUrl>
 		<PackageTags>WinUI.Dependency; WinUI.DependencyInjection; WinUI DependencyInjection</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		
+		<Version>1.1.0</Version>
+		<PackageProjectUrl>https://github.com/gabor-budai/WinUI.DependencyInjection</PackageProjectUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">

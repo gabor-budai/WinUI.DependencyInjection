@@ -24,14 +24,17 @@ public partial class App : Application, WinUI.DependencyInjection.IXamlMetadataS
         get;
     }
 
-    // See how the generated code changes when you uncomment the methods (Analyzers->WinUI.DependencyInjection->App.xaml.XamlMetadataServiceProvider.g.cs).
-    // Explicit declaration is fine, rename the host and use this method the code will work. (GetRequiredService changes)
-    // object WinUI.DependencyInjection.IXamlMetadataServiceProvider.GetRequiredService(Type type) => Host.Services.GetRequiredService(type);
+	// See how the generated code changes when you uncomment the methods (Analyzers->WinUI.DependencyInjection->App.xaml.XamlMetadataServiceProvider.g.cs).
+	// Explicit declaration is fine, rename the host and use this method the code will work. (GetRequiredService changes)
+	// object WinUI.DependencyInjection.IXamlMetadataServiceProvider.GetRequiredService(Type type) => Host.Services.GetRequiredService(type);
 
-    // Implicit declaration is fine, an example implementation is provided below. (ctor changes)
-    // public Microsoft.UI.Xaml.Markup.IXamlMetadataProvider GetAppProvider() => (Microsoft.UI.Xaml.Markup.IXamlMetadataProvider)typeof(App).GetProperty("_AppProvider", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(this)!;
+	// Implicit declaration is fine, an example implementation is provided below. (ctor changes)
+	// public Microsoft.UI.Xaml.Markup.IXamlMetadataProvider GetAppProvider() => (Microsoft.UI.Xaml.Markup.IXamlMetadataProvider)typeof(App).GetProperty("_AppProvider", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(this)!;
 
-    public static T GetService<T>()
+	// It's not the interface implementation; it's never invoked by the generated code.
+	// private object GetRequiredService(Type type) => Host.Services.GetRequiredService(type);
+
+	public static T GetService<T>()
         where T : class
     {
         if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
@@ -49,7 +52,7 @@ public partial class App : Application, WinUI.DependencyInjection.IXamlMetadataS
     public App()
     {
         InitializeComponent();
-
+		Host.Services.GetRequiredService(null!);
         Host = Microsoft.Extensions.Hosting.Host.
         CreateDefaultBuilder().
         UseContentRoot(AppContext.BaseDirectory).

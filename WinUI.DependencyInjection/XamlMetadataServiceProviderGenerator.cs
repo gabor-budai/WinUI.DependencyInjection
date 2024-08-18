@@ -13,13 +13,13 @@ public class XamlMetadataServiceProviderGenerator : ISourceGenerator
     {
 
 #if DEBUG
-        //if (!System.Diagnostics.Debugger.IsAttached)
-        //{
-        //    System.Diagnostics.Debugger.Launch();
-        //}
+		//if (!System.Diagnostics.Debugger.IsAttached)
+		//{
+		//	System.Diagnostics.Debugger.Launch();
+		//}
 #endif
 
-        context.RegisterForPostInitialization((i) =>
+		context.RegisterForPostInitialization((i) =>
         {
             i.AddSource($"{Templates.XamlMetadataServiceProviderAttribute.Name}.g.cs", Templates.XamlMetadataServiceProviderAttribute.Text);
             i.AddSource($"{Templates.IXamlMetadataServiceProvider.Name}.g.cs", Templates.IXamlMetadataServiceProvider.Text);
@@ -39,10 +39,11 @@ public class XamlMetadataServiceProviderGenerator : ISourceGenerator
             var classSymbol = context.Compilation.GetSemanticModel(classDeclarationSyntax.SyntaxTree).GetDeclaredSymbol(classDeclarationSyntax);
             if (classSymbol?.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == Templates.XamlMetadataServiceProviderAttribute.FullName) is null or false) continue;
 
-            var syntaxTree = classDeclarationSyntax.SyntaxTree;
-            var classInfo = ClassInfo.CreateInstance(classDeclarationSyntax, classSymbol);
+            var classInfo = ClassInfo.CreateInstance(classSymbol);
             if (classInfo is null) continue;
-            context.AddSource(GetFileName(syntaxTree.FilePath), SourceText.From(GenerateCode(languageVersion, classInfo), syntaxTree.Encoding));
+
+			var syntaxTree = classDeclarationSyntax.SyntaxTree;
+			context.AddSource(GetFileName(syntaxTree.FilePath), SourceText.From(GenerateCode(languageVersion, classInfo), syntaxTree.Encoding));
         }
     }
 

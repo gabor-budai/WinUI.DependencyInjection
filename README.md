@@ -2,7 +2,7 @@
 This source generator makes possible to instantiate a ```Micrsoft.UI.Xaml.Controls.Page``` via a service provider.
 
 # Why and how
-You can find the detailed explanation in [here](README_DETAIL.md).
+You can find the detailed explanation in [here](https://github.com/gabor-budai/WinUI.DependencyInjection/blob/master/README_DETAIL.md).
 
 # Usage
 The source generator generates the ```XamlMetadataServiceProviderAttribute``` attribute and App class must have this attribute to override the default XamlMetadaProvider.
@@ -46,6 +46,7 @@ public partial class App : WinUI.DependencyInjection.IXamlMetadataServiceProvide
         // Your service provider.
     }
 
-    public IXamlMetadataProvider GetAppProvider() => typeof(App).GetProperty("AppProviderName", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
+    // The generated provider has an _AppProvider property. If the WinUI team changes its name, you can update it with the new name here.
+    public IXamlMetadataProvider GetAppProvider() => typeof(App).GetProperty("NewAppProviderName", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
 }
 ```

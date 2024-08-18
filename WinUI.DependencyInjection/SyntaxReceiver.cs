@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WinUI.DependencyInjection;
 
-internal class SyntaxReceiver : ISyntaxReceiver
+public class SyntaxReceiver : ISyntaxReceiver
 {
     public IList<ClassDeclarationSyntax> CandidateClasses { get; } = [];
 
